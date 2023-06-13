@@ -9,7 +9,7 @@
 ### Last Updated: November 15th, 2022
 ### 
 ### Recommended Citation: 
-### Posmik, Daniel C. (2022) "Predicting International Student Enrollment by Institutional Aid: A Random and Fixed Effects Approach," Journal of Student Financial Aid: Vol. 51 : Iss. 3 , Article 4.
+### Posmik, Daniel C. (2022) "Predicting International Student Enrollment by Institutional Aid: A Random and Fixed Effects Approach," Journal of Student Financial Aid, 51(3), Article 4.
 ### DOI: https://doi.org/10.55504/0884-9153.1802
 ### Available at: https://ir.library.louisville.edu/jsfa/vol51/iss3/4
 ###
