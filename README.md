@@ -1,7 +1,8 @@
 ## Predicting International Student Enrollment by Institutional Aid: Using Fixed and Random Effects
 
-This repository contains replication code and a summary. 
-Suggested citation: Posmik, Daniel C. (2022) "Predicting International Student Enrollment by Institutional Aid: A Random and Fixed Effects Approach," _Journal of Student Financial Aid, 51(3) , Article 4_.
+This repository contains replication code and a summary.
+
+**Suggested citation:** Posmik, Daniel C. (2022) "Predicting International Student Enrollment by Institutional Aid: A Random and Fixed Effects Approach," _Journal of Student Financial Aid, 51(3) , Article 4_.
 
 * `analysis.R` code file
 
