@@ -60,3 +60,86 @@ These findings - especially the latter ones - have important consequences for in
 
 Lastly, this insight may also be of value for local policymakers. Aid is an effective and reliable tool to attract and retain international talent for policymakers (Douglass and Edelstein, 2009; Li, 2017), creating a means to affect economic development/ growth in certain regions/ industries via universities as intermediaries (Owens et al., 2011). All in all, I conclude that financial aid is a reliable enrollment management tool that prioritizes students, institutions, and economic interests.
 
+### 5. Addendum for Fellow Statistics Nerds
+
+For me, this paper is interesting for many reasons. However, one of my favorite features is a creative use of the random effects model to shine light on heterogeneous treatment responses from a correlational perspective. This is quite an unusual application of this technique, so I have decided to write this addendum with a detailed explanation surrounding it. Before we get started, please note that any longitudinal data analysis technique I use--i.e. fixed and random effects models--has nothing to do with a claim to causality, regardless of their potentially misleading name. 
+
+Generally, a pooled ordinary least squares (Pooled OLS) model takes the form
+
+$$ Y = \alpha + \beta \mathbb{X} + {\epsilon}_{i,t} $$
+
+where $\alpha$ is the constant, $\mathbb{X}$ is a ${p}\times{n}$ matrix of independent variables ($n$ observations of $p$ variables), and ${\epsilon}_{i,t}$ is the idiosyncratic error term. Without any causal assumptions, $\beta$ is ordinary least squares coefficient, pooling all data together regardless of time period and institution. Now, this is where the first problem arises. When dealing with longitudinal data, is seldom the case that pooling data accurately represents reality. There are likely group-specific correlations, i.e. aid awards within certain years or certain universities. Although there may not be across-group correlation, the within-group correlation result in endogeneity that is not accounted for. In simple terms, our pooled OLS model does not explain everything it should!
+
+Now, what can we do? We could account for these within-group correlations by simply removing them before estimation. This is exactly what a fixed effects model does. Mechanically, the fixed effects coefficient $\beta_{FE}$ is obtained by demeaning the pooled estimator by time and institution averages:
+
+```math
+\bar{Y}_i = \frac{1}{T} \sum_{t=1}^{T} Y_{i,t}
+```
+```math
+\bar{X}_i = \frac{1}{T} \sum_{t=1}^{T} X_{i,t} 
+```
+```math
+\bar{\epsilon}_i = \frac{1}{T} \sum_{t=1}^{T} \epsilon_{i,t}
+```
+
+which are then subtracted from the pooled variables such that
+
+```math
+\tilde{Y}_{i,t} = Y_{i,t} - \bar{Y}_i
+```
+```math
+\tilde{X}_{i,t} = X_{i,t} - \bar{X}_i 
+```
+```math
+\tilde{\epsilon}_{i,t} = \epsilon_{i,t} - \bar{\epsilon}_i
+```
+which finally yield the fixed effects model:
+
+```math
+\tilde{Y}_{it} = \beta_{FE}\tilde{\mathbb{X}}_{it}' + \tilde{\epsilon}_{it}
+```
+A random effects model takes a similar--albeit not identical--approach to identification. Notably, random effects model is useful when pooling disregards important across-group correlations but two-way demeaning is too drastic. Notably, a random effects model is the middle-ground between a pooled and fixed effects approach. Specifically, a random effects use fixed effects only for the time-invariant differences across entities or groups, while the random effects capture the variation within entities or groups that cannot be explained by the observed covariates. The key differences lies in how the within-group demeaning is handled! -- Okay, I understand this a pretty abstract thought, but I guarantee you this going to get clearer when we look at the mechanics of the estimation. Stick with me!!
+
+Rather than demeaning by a "full" average across **both** time and group (see fixed effects), we only **fully** demean over time while **partially** demeaning over group. This looks like this:
+
+```math
+\tilde{Y}_{i,t} = Y_{i,t} - \textcolor{orange}{\Lambda} \bar{Y}_i
+```
+```math
+\tilde{X}_{i,t} = X_{i,t} - \textcolor{orange}{\Lambda} \bar{X}_i 
+```
+```math
+\tilde{\epsilon}_{i,t} = \epsilon_{i,t} - \textcolor{orange}{\Lambda} \bar{\epsilon}_i
+```
+where $\textcolor{orange}{\Lambda} \in [0,1]$. Immediately observe that when $\textcolor{orange}{\Lambda} = 0$, we get our pooled estimator because we effectively subtract nothing from it. Similarly, when $\textcolor{orange}{\Lambda} = 1$ we get our two-way fixed estimator because we demean by the full average! Pretty cool connection, right?
+
+That's all great so far--but what exactly is this ominous $\textcolor{orange}{\Lambda}$? Where does it come from? Where does it go? Where'd you come from Cotton Eye Joe? Just kidding, but seriously, bear with me again as it gets a little abstract again: 
+
+```math
+\textcolor{orange}{\Lambda} = 1 - \sqrt{\frac{\textcolor{red}{\sigma_{\epsilon}^{2}}}{\textcolor{red}{\sigma_{\epsilon}^{2}} + \textcolor{green}{T}\times\textcolor{blue}{\sigma_{\delta}^{2}}}}
+```
+
+Let's peel this monstrosity back--piece by piece. $\textcolor{red}{\sigma_{\epsilon}^{2}}$ is simply the variance of our idiosyncratic error term $\epsilon_{i,t}$. Now, $\textcolor{blue}{\sigma_{\delta}^{2}}$ is the variance of an unobserved term $\delta_i$ which is the across-group error term. Theoretically, we can also combine $\textcolor{blue}{\delta}_i} + \textcolor{blue}{\epsilon}_{i,t}}$ into a composite error term, but that is simply a preference of notation. Just understand that $\textcolor{blue}{\sigma_{\delta}^{2}}$ measures variance **only** across groups and $\textcolor{red}{\sigma_{\epsilon}^{2}}$ across **both** groups and time. The term $\textcolor{green}{T}$ signifies the number of time periods and functions as a weight to our across-group variance term. 
+
+In this arrangement, $\textcolor{orange}{\Lambda}$ gets closer to 1 ("demeans more") when either $\textcolor{green}{T}$ and/or $\textcolor{blue}{\sigma_{\delta}^{2}}$ become large. The random effects estimator demeans less (closer to 0), when those terms are low. That means the random effects estimator "punishes" across-group variance. Simply put, it feels the need to subtract more if the groups are not similar to one another, or if the variation amongst the groups is large. If that is the case, it assumes that random variation within the groups is larger. This is also where the estimator derives its name from. 
+
+Other details, like the functional form of $\textcolor{orange}{\Lambda}$ (e.g., why is there a square root?), are also important. However, explaining that would require me to go into the asymptotics of the random effects estimator and that is a little beyond the scope of this addendum. The most important take-away from the section is that you understand what the different variance components mean. To make this more tangible, here is a list of corrolaries that significantly improved my understanding of the random effects estiamtor:
+- Consider $\textcolor{green}{T=0}: This Makes $\textcolor{orange}{\Lambda} = 0$. This makes the random effects estimator equal to the pooled estimator. This makes sense because zero time periods is analogous to pooling everything together (i.e. we don't differentiate between time periods)
+- Consider $\textcolor{blue}{\sigma_{\delta}^{2}} = 0$. This also makes the random effects estimator equal to the pooled estimator. This time, zero variance in the across-group variance means that there is practically no across-group difference. This means that we pool everything across groups -- Ta Da!
+- Consider $\textcolor{red}{\sigma_{\epsilon}^{2}} = 0$. Again random effects estimator equals pooled estimator. If there is no variance across either time *and** groups, it follows that there is no variance in **neither** group **nor** variance. We pool again!
+- Putting all this together, it follows that we have a random effects estimator of and only if $0 < \textcolor{orange}{\Lambda} < 1$. The edge cases of a random effects estimator, are a pooled estimator and a fixed effects estiamtor for ${0,1}$ respectively. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
