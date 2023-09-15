@@ -40,7 +40,7 @@ The general model controls for three variables. The log of cost (since aid is on
 
 Statistical testing as well as literature led to choose a 2-way fixed effects (TWFE) model. 
 
-<img src="images/models.jpg?raw=true"/>
+<img src="models.jpg"/>
 
 The results show that both financial aid and aid concentration are the most significant predictors of ISEft. All else equal, a 10% increase in financial aid yields a 1.8% increase in ISEft. Done!
 
@@ -50,7 +50,7 @@ Didn't I forget about something? Wasn't there something about treatment effect h
 
 The second part of the paper uses a random effects (RE) model to examine whether aid predictions vary when conditioned on certain institutional characteristics. I examine the interaction of financial aid within the most important (see Bicak and Taylor, 2020) time-invariant institutional predictors of ISEft: Location (Rural, Suburban, Urban), Sector (Private, Public), and Research Intensity (Low, Medium, High). In a nutshell, those are highly significant ISEft predictors that institutions cannot change (easily). Using a RE model, I interact the log of financial aid variable with a each of those time-invariant characteristics. The coefficient on this interaction term tells us _how much more_ (→ positive coefficient on interaction term) or _how much less_ (→ negative coefficient on interaction term) powerful aid is within this specific characteristic. 
 
-<img src="images/results2.jpg?raw=true"/>
+<img src="results2.jpg"/>
 
 The results are fascinating! We can see that rural, low research intensity, and private institutions experience enrollment boosts when compared to their counterparts (note how important a precise interpretation of this RE model is). This suggests that the institutions that generally have the lowest average international student enrollment can profit the most by awarding aid. Especially rural institutions have a high enrollment boost of 4.5% when compared to their suburban and urban counterparts.  
 
