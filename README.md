@@ -119,27 +119,24 @@ That's all great so far--but what exactly is this ominous $\textcolor{orange}{\L
 \textcolor{orange}{\Lambda} = 1 - \sqrt{\frac{\textcolor{red}{\sigma_{\epsilon}^{2}}}{\textcolor{red}{\sigma_{\epsilon}^{2}} + \textcolor{green}{T}\times\textcolor{blue}{\sigma_{\delta}^{2}}}}
 ```
 
-Let's peel this monstrosity back--piece by piece. $\textcolor{red}{\sigma_{\epsilon}^{2}}$ is simply the variance of our idiosyncratic error term $\epsilon_{i,t}$. Now, $\textcolor{blue}{\sigma_{\delta}^{2}}$ is the variance of an unobserved term $\delta_i$ which is the across-group error term. Theoretically, we can also combine $\textcolor{blue}{\delta}_i} + \textcolor{blue}{\epsilon}_{i,t}}$ into a composite error term, but that is simply a preference of notation. Just understand that $\textcolor{blue}{\sigma_{\delta}^{2}}$ measures variance **only** across groups and $\textcolor{red}{\sigma_{\epsilon}^{2}}$ across **both** groups and time. The term $\textcolor{green}{T}$ signifies the number of time periods and functions as a weight to our across-group variance term. 
+Let's peel this monstrosity back--piece by piece. $\textcolor{red}{\sigma_{\epsilon}^{2}}$ is simply the variance of our idiosyncratic error term $\epsilon_{i,t}$. Now, $\textcolor{blue}{\sigma_{\delta}^{2}}$ is the variance of an unobserved term $\delta_i$ which is the across-group error term. Theoretically, we can also combine $\textcolor{blue}{\delta_i} + \textcolor{red}{\epsilon_{i,t}}$ into a composite error term, but that is simply a preference of notation. Just understand that $\textcolor{blue}{\sigma_{\delta}^{2}}$ measures variance **only** across groups and $\textcolor{red}{\sigma_{\epsilon}^{2}}$ across **both** groups and time. The term $\textcolor{green}{T}$ signifies the number of time periods and functions as a weight to our across-group variance term. 
 
 In this arrangement, $\textcolor{orange}{\Lambda}$ gets closer to 1 ("demeans more") when either $\textcolor{green}{T}$ and/or $\textcolor{blue}{\sigma_{\delta}^{2}}$ become large. The random effects estimator demeans less (closer to 0), when those terms are low. That means the random effects estimator "punishes" across-group variance. Simply put, it feels the need to subtract more if the groups are not similar to one another, or if the variation amongst the groups is large. If that is the case, it assumes that random variation within the groups is larger. This is also where the estimator derives its name from. 
 
 Other details, like the functional form of $\textcolor{orange}{\Lambda}$ (e.g., why is there a square root?), are also important. However, explaining that would require me to go into the asymptotics of the random effects estimator and that is a little beyond the scope of this addendum. The most important take-away from the section is that you understand what the different variance components mean. To make this more tangible, here is a list of corrolaries that significantly improved my understanding of the random effects estiamtor:
-- Consider $\textcolor{green}{T=0}: This Makes $\textcolor{orange}{\Lambda} = 0$. This makes the random effects estimator equal to the pooled estimator. This makes sense because zero time periods is analogous to pooling everything together (i.e. we don't differentiate between time periods)
+- Consider $\textcolor{green}{T=0}$: This Makes $\textcolor{orange}{\Lambda} = 0$. This makes the random effects estimator equal to the pooled estimator. This makes sense because zero time periods is analogous to pooling everything together (i.e. we don't differentiate between time periods)
 - Consider $\textcolor{blue}{\sigma_{\delta}^{2}} = 0$. This also makes the random effects estimator equal to the pooled estimator. This time, zero variance in the across-group variance means that there is practically no across-group difference. This means that we pool everything across groups -- Ta Da!
 - Consider $\textcolor{red}{\sigma_{\epsilon}^{2}} = 0$. Again random effects estimator equals pooled estimator. If there is no variance across either time *and** groups, it follows that there is no variance in **neither** group **nor** variance. We pool again!
 - Putting all this together, it follows that we have a random effects estimator of and only if $0 < \textcolor{orange}{\Lambda} < 1$. The edge cases of a random effects estimator, are a pooled estimator and a fixed effects estiamtor for ${0,1}$ respectively. 
 
+Phew--good job! If you've read that far, you have a very solid background in pooled, fixed effects, and random effects estimators. Now, let's proceed to the meat of this section: How I used the random effects estimator to estimate correlations within time-invariant settings. 
 
+The fixed effects estimator is simple and effective--making it a popular tool amongst applied empirical researchers working with panel data sets. However, one of its main strengths can also be a major drawback. Recall that a fixed effects estimator demeans fully over time, aka it removes everything within a group that doesn't vary over time. This makes it impossible to interact time-invariant variables with a fixed effects estimator because, well, it would just be removed! Luckily, we learned that we have a tool at our disposal that functions similarly to the fixed effects estimator, but doesn't **fully** demean across both dimensions. 
 
+I used a random effects model to analyze how the correlation between financial aid and international student enrollment changes within time-invariant institutional settings. This is really important because there is strong evidence (see, Bicak & Taylor 2021) that time-invariant institutional characteristics, e.g., research activity, location, and sector, are amongst the most important predictors of enrollment. My random effects specification interacts a categorical dummy variable for each of those time-invariant institutional characteristics with the financial aid variable. 
 
+By using the the across-group variance $\textcolor{blue}{\sigma_{\delta}^{2}}$ I can still account for the across-group differences **without** having to fully demean across them. Isn't that cool? 
 
+The coefficients on these interaction terms showed the marginal differences in enrollment changes across institutional settings. Summa summarum, this is a sneaky way to circumvent the principal weakness of the fixed effects estimator!
 
-
-
-
-
-
-
-
-
-
+P.S.: I want to thank Ben Lambert whose YouTube series made summarizing key concepts exponentially easier. 
